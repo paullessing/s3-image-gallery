@@ -1,4 +1,4 @@
-import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyHandler } from 'aws-lambda';
 import AppError from './app.error';
 import { formatJSONResponse } from './helpers';
 

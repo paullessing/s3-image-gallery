@@ -12,7 +12,7 @@ export interface IPagingData<TModel, TKey extends DocumentClient.Key = DocumentC
 export default abstract class BaseRepository<TKey extends DocumentClient.Key, TModel extends TKey> {
   protected abstract readonly tableName: string;
 
-  async upsert(item: TKey & Partial<TModel>): Promise<TModel> {
+  public async upsert(item: TKey & Partial<TModel>): Promise<TModel> {
     const params: DocumentClient.PutItemInput = {
       TableName: this.tableName,
       Item: item,
@@ -23,7 +23,7 @@ export default abstract class BaseRepository<TKey extends DocumentClient.Key, TM
     return item as TModel;
   }
 
-  async getByKey(key: TKey): Promise<TModel | null> {
+  public async getByKey(key: TKey): Promise<TModel | null> {
     const params: DocumentClient.GetItemInput = {
       TableName: this.tableName,
       Key: key,
@@ -34,7 +34,7 @@ export default abstract class BaseRepository<TKey extends DocumentClient.Key, TM
     return response.Item as TModel;
   }
 
-  async updateByKey(key: TKey, updateObject: Partial<TModel>): Promise<TModel> {
+  public async updateByKey(key: TKey, updateObject: Partial<TModel>): Promise<TModel> {
     const updateExpressions: string[] = [];
     const expressionAttributeNames: DocumentClient.ExpressionAttributeNameMap = {};
     const expressionAttributeValues: DocumentClient.ExpressionAttributeValueMap = {};
@@ -61,7 +61,7 @@ export default abstract class BaseRepository<TKey extends DocumentClient.Key, TM
     return Attributes as TModel;
   }
 
-  async deleteByKey(key: TKey): Promise<void> {
+  public async deleteByKey(key: TKey): Promise<void> {
     const params: DocumentClient.DeleteItemInput = {
       TableName: this.tableName,
       Key: key,

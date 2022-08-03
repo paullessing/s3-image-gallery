@@ -7,7 +7,7 @@ export type UpdateMovieInfoDTO = Partial<IMovieInfo>;
 class MovieRepository extends BaseRepository<IMovieKey, IMovie> {
   protected tableName = 'Movies';
 
-  async listMoviesByYear(
+  public async listMoviesByYear(
     year: number,
     limit: number,
     lastEvaluatedKey?: IMovieKey,

@@ -1,7 +1,7 @@
-import BaseRepository from '@repositories/base.repository';
-import ddbDoc from '@libs/ddb-doc';
 import { AWSError, Request } from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import ddbDoc from '@libs/ddb-doc';
+import BaseRepository from '@repositories/base.repository';
 
 describe('BaseRepository', () => {
   const tableName = 'table-name';
