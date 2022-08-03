@@ -19,9 +19,9 @@ services:
         condition: service_healthy
     environment:
       DYNAMO_ENDPOINT: http://dynamodb-local:8000
-      AWS_ACCESS_KEY_ID: 'DUMMYIDEXAMPLE'
-      AWS_SECRET_ACCESS_KEY: 'DUMMYEXAMPLEKEY'
-      REGION: 'eu-west-1'
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?Required}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?Required}
+      REGION: 'eu-west-2'
   dynamodb-admin:
     image: aaronshaf/dynamodb-admin
     tty: true
