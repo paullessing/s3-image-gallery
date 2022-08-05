@@ -3,15 +3,15 @@ import {
   APIGatewayProxyEventQueryStringParameters,
 } from 'aws-lambda/trigger/api-gateway-proxy';
 
-import * as movieService from '@functions/movies/movie.service';
-import { IMoviesByYearResponse } from '@functions/movies/movie.service';
+import * as movieService from '@functions/images/image.service';
+import { IMoviesByYearResponse } from '@functions/images/image.service';
 import {
   ICreateMovieDTO,
   UpdateMovieInfoDTO,
 } from '@repositories/movie.repository';
 import { ICustomAPIGatewayProxyEvent } from '@libs/api-gateway';
 import { IMovie } from '@models/movie.model';
-import * as controller from './movie.controller';
+import * as controller from './image.controller';
 
 describe('MovieController', () => {
   describe('createMovie()', () => {
@@ -22,7 +22,7 @@ describe('MovieController', () => {
         .mockName('movieService.createMovie')
         .mockResolvedValue(newMovie);
 
-      const actual = await controller.createMovie({
+      const actual = await controller.createImage({
         body: dto,
       } as ICustomAPIGatewayProxyEvent<ICreateMovieDTO>);
 

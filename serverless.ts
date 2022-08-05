@@ -1,4 +1,4 @@
-import { manageMovies } from '@functions/movies';
+import { manageImages } from '@functions/images';
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
@@ -11,6 +11,7 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs16.x',
+    region: 'eu-west-2',
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -21,7 +22,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   functions: {
-    manageMovies,
+    manageImages,
   },
   package: { individually: true },
   custom: {

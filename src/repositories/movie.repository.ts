@@ -1,4 +1,4 @@
-import { IMovie, IMovieInfo, IMovieKey } from '../models/movie.model';
+import { IMovie, IMovieInfo, IMovieKey } from '@models/movie.model';
 import BaseRepository, { IPagingData, QueryInput } from './base.repository';
 
 export type ICreateMovieDTO = Omit<IMovie, 'info'>;

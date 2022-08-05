@@ -1,26 +1,17 @@
 /* eslint-disable camelcase */
 import AppError from '@libs/app.error';
 import { IMovie, IMovieInfo, IMovieKey } from '@models/movie.model';
-import movieRepository, {
-  ICreateMovieDTO,
-  UpdateMovieInfoDTO,
-} from '@repositories/movie.repository';
+import movieRepository, { UpdateMovieInfoDTO, } from '@repositories/movie.repository';
+import imageRepository, { CreateImageDto } from '@repositories/image.repository';
 
 export interface IMoviesByYearResponse {
   data: Array<Pick<IMovie, 'title' | 'year'> & { info: Pick<IMovieInfo, 'image_url'> }>;
   nextPageToken?: string;
 }
 
-export async function createMovie(createMovieDTO: ICreateMovieDTO) {
-  const foundMovie = await movieRepository.getByKey({
-    title: createMovieDTO.title,
-    year: createMovieDTO.year,
-  });
-  if (foundMovie) {
-    throw new AppError('Movie already existed');
-  }
+export async function createImage(createImageDto: CreateImageDto) {
 
-  return movieRepository.upsert(createMovieDTO);
+  return imageRepository.upsert(createImageDto);
 }
 
 export async function getMoviesByYear(

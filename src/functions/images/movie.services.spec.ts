@@ -3,9 +3,9 @@ import movieRepository, {
   UpdateMovieInfoDTO,
 } from '@repositories/movie.repository';
 import AppError from '@libs/app.error';
-import * as movieService from '@functions/movies/movie.service';
+import * as movieService from '@functions/images/image.service';
 import { IMovie, IMovieKey, IMovieInfo } from '@models/movie.model';
-import { IMoviesByYearResponse } from './movie.service';
+import { IMoviesByYearResponse } from './image.service';
 
 describe('MovieService', () => {
   describe('createMovie()', () => {
