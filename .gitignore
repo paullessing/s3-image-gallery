@@ -24,3 +24,6 @@ docker/dynamodb/*
 
 # Os temporary
 .DS_Store
+
+# Content for Fake S3 files
+/fakes3

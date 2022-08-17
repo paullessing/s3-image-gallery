@@ -1,6 +1,16 @@
 # A Serverless Typescript Template With Docker Development Environment
 https://aws.plainenglish.io/a-serverless-typescript-template-with-docker-development-environment-1f6e6683294
 
+
+## Notes
+* Use `dc up` to start the server
+* Environment variables to pass through to the app have to be duplicated in the serverless config
+* Need to add to `hosts` file:
+    ```
+    127.0.0.1 s3-image-upload.s3
+    ```
+
+
 ## Template features
 
 This template has been generated using the `aws-nodejs-typescript` template from the [Serverless framework](https://www.serverless.com/).
