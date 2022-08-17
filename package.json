@@ -7,7 +7,7 @@
     "start": "sls offline --host=0.0.0.0 --verbose",
     "dev": "nodemon --exec npm start",
     "lint": "eslint src/**/*.ts",
-    "migrate:movies": "docker-compose exec api npx ts-node migrations/movies/index.ts",
+    "migrate:images": "docker-compose exec api npx ts-node migrations/images/index.ts",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "deploy": "sls deploy"
@@ -16,8 +16,9 @@
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@types/aws-lambda": "^8.10.71",
     "aws-sdk": "^2.1001.0",
-    "@types/aws-lambda": "^8.10.71"
+    "prettier": "^2.7.1"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.21.0",
