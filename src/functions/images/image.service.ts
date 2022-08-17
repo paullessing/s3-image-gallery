@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 import { randomUUID } from 'crypto';
-import { PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import AppError from '@libs/app.error';
 import s3Client from '@libs/s3client';
 import { Image } from '@models/image.model';
@@ -25,18 +23,33 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
     throw new Error('filename required');
   }
 
-  const bucketParams: PutObjectCommandInput = {
-    Bucket: `s3-image-upload`,
-    Key: `${id}`,
-  };
-
-  // Create a command to put the object in the S3 bucket.
-  const command = new PutObjectCommand(bucketParams);
+  // const bucketParams: PutObjectCommandInput = {
+  //   Bucket: `s3-image-upload`,
+  //   Key: `s3-image-upload/original/${id}`,
+  //   ACL: 'public-read',
+  // };
+  //
+  // // Create a command to put the object in the S3 bucket.
+  // const command = new PutObjectCommand(bucketParams);
   // Create the presigned URL.
-  const signedUrl = await getSignedUrl(s3Client, command, {
-    expiresIn: 3600,
+  // const signedUrl = await getSignedUrl(s3Client, command, {
+  //   expiresIn: 3600,
+  //   signingRegion: 'eu-west-2',
+  // });
+  // console.log(signedUrl);
+
+  const signedPost = await s3Client.createPresignedPost({
+    Bucket: `s3-image-upload`,
+    Expires: 3600,
+    Fields: {
+      key: `original/${id}`,
+    },
   });
-  console.log(signedUrl);
+  console.log('SIGNED URL', JSON.stringify(signedPost));
+
+  // console.log('About to send command', command);
+  //
+  // await s3Client.send(command);
 
   const fileName = 'todo generate for AWS';
   const originalFileName = createImageDto.fileName;
@@ -49,7 +62,7 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
   };
 
   const upload: CreateImageDto['upload'] = {
-    url: signedUrl,
+    url: signedPost.url,
     validUntil: new Date(new Date().getTime() + 3600 * 1000), // TODO actually compute properly
   };
 

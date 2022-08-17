@@ -19,9 +19,11 @@ services:
         condition: service_healthy
     environment:
       DYNAMO_ENDPOINT: http://dynamodb-local:8000
-      S3_ENDPOINT: http://s3:4569
+      S3_ENDPOINT: http://s3:9000
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?Required}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?Required}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:?Required}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:?Required}
       REGION: 'eu-west-2'
   dynamodb-admin:
     image: aaronshaf/dynamodb-admin
@@ -47,8 +49,20 @@ services:
       timeout: 5s
       retries: 5
   s3:
-    image: lphoward/fake-s3
+    image: minio/minio
     ports:
-      - "127.0.0.1:4569:4569"
+      - "9001:9001"
+      - "9000:9000"
+    expose:
+      - 9000
+    networks:
+      default:
+        aliases:
+          - s3-image-upload.s3
     volumes:
-      - ./fakes3:/fakes3_root
+      - ./fakes3:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    command: "server /data --console-address=:9001"
+    restart: unless-stopped
