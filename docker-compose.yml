@@ -19,6 +19,7 @@ services:
         condition: service_healthy
     environment:
       DYNAMO_ENDPOINT: http://dynamodb-local:8000
+      S3_ENDPOINT: http://s3:4569
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?Required}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?Required}
       REGION: 'eu-west-2'
@@ -45,3 +46,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  s3:
+    image: lphoward/fake-s3
+    ports:
+      - "127.0.0.1:4569:4569"
+    volumes:
+      - ./fakes3:/fakes3_root

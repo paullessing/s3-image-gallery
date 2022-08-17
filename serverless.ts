@@ -16,6 +16,9 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      S3_ENDPOINT: '${env:S3_ENDPOINT}',
+      DYNAMO_ENDPOINT: '${env:DYNAMO_ENDPOINT}',
+      REGION: '${env:REGION}',
     },
   },
   functions: {

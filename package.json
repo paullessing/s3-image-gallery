@@ -4,7 +4,7 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "start": "sls offline --host=0.0.0.0 --verbose",
+    "start": "sls offline start --host=0.0.0.0 --verbose",
     "dev": "nodemon --exec npm start",
     "lint": "eslint src/**/*.ts",
     "migrate:images": "docker-compose exec api npx ts-node migrations/images/index.ts",
@@ -16,6 +16,8 @@
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.150.0",
+    "@aws-sdk/s3-request-presigner": "^3.150.0",
     "@types/aws-lambda": "^8.10.71",
     "aws-sdk": "^2.1001.0",
     "prettier": "^2.7.1"
@@ -32,7 +34,7 @@
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^27.5.1",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.19",
     "serverless": "^3.22.0",
     "serverless-esbuild": "^1.32.6",
     "serverless-offline": "^9.2.3",

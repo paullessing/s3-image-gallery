@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import { randomUUID } from 'crypto';
+import { PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import AppError from '@libs/app.error';
+import s3Client from '@libs/s3client';
 import { Image } from '@models/image.model';
 import { IMovie, IMovieInfo, IMovieKey } from '@models/movie.model';
 import imageRepository, { CreateImageDto } from '@repositories/image.repository';
@@ -21,6 +24,20 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
   if (!createImageDto.fileName) {
     throw new Error('filename required');
   }
+
+  const bucketParams: PutObjectCommandInput = {
+    Bucket: `s3-image-upload`,
+    Key: `${id}`,
+  };
+
+  // Create a command to put the object in the S3 bucket.
+  const command = new PutObjectCommand(bucketParams);
+  // Create the presigned URL.
+  const signedUrl = await getSignedUrl(s3Client, command, {
+    expiresIn: 3600,
+  });
+  console.log(signedUrl);
+
   const fileName = 'todo generate for AWS';
   const originalFileName = createImageDto.fileName;
   const sizeBytes = 0;
@@ -31,7 +48,10 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
     height: 1,
   };
 
-  const upload = null;
+  const upload: CreateImageDto['upload'] = {
+    url: signedUrl,
+    validUntil: new Date(new Date().getTime() + 3600 * 1000), // TODO actually compute properly
+  };
 
   return imageRepository.upsert({
     ...createImageDto,
