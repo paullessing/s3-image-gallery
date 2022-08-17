@@ -1,8 +1,8 @@
 import BaseRepository from './base.repository';
 import { Image, ImageKey } from '@models/image.model';
 
-export type CreateImageDto = Pick<Image, 'id'>;
-export type UpdateImageDto = Omit<Image, 'id'>;
+export type CreateImageDto = Omit<Image, 'id'>;
+export type UpdateImageDto = Pick<Image, 'id'>;
 
 class ImageRepository extends BaseRepository<ImageKey, Image> {
   protected tableName = 'Images';

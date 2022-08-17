@@ -1,3 +1,12 @@
+### Insert Image
+POST {{baseUrl}}/images
+Content-Type: application/json
+
+{
+  "creator": "Paul",
+  "fileName": "image.jpg"
+}
+
 ### Create movie
 POST {{baseUrl}}/movies
 Content-Type: application/json

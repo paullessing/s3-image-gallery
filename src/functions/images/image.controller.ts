@@ -1,12 +1,12 @@
+import * as imageService from '@functions/images/image.service';
 import { ICustomAPIGatewayProxyEvent } from '@libs/api-gateway';
-import { ICreateMovieDTO } from '@repositories/movie.repository';
-import * as movieService from '@functions/images/image.service';
+import { Image } from '@models/image.model';
 import { CreateImageDto } from '@repositories/image.repository';
 
-export function createImage(event: ICustomAPIGatewayProxyEvent<CreateImageDto>) {
+export function createImage(event: ICustomAPIGatewayProxyEvent<CreateImageDto>): Promise<Image> {
   const { body } = event;
 
-  return movieService.createImage(body);
+  return imageService.createImage(body);
 }
 
 // export function getMoviesByYear(event: ICustomAPIGatewayProxyEvent) {

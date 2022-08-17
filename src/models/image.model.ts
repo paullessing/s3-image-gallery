@@ -1,4 +1,5 @@
 export interface ImageData {
+  createdAt: Date;
   uploadedAt: Date;
   creator: string;
   fileName: string;
@@ -9,8 +10,10 @@ export interface ImageData {
     height: number;
   };
 
-  uploadUrl: string;
-  uploadValidUntil: Date;
+  upload: null | {
+    url: string;
+    validUntil: Date;
+  }
 }
 
 export interface ImageKey {
