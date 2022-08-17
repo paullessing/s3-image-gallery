@@ -1,13 +1,10 @@
-import { manageImages } from '@functions/images';
 import type { AWS } from '@serverless/typescript';
+import { manageImages } from '@functions/images';
 
 const serverlessConfiguration: AWS = {
   service: 'template',
   frameworkVersion: '3',
-  plugins: [
-    'serverless-esbuild',
-    'serverless-offline',
-  ],
+  plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs16.x',
@@ -31,18 +28,14 @@ const serverlessConfiguration: AWS = {
       minify: false,
       sourcemap: 'inline',
       exclude: ['aws-sdk'],
-      target: 'node14',
+      target: 'node16',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
       tsconfig: 'tsconfig.build.json',
       watch: {
         pattern: ['src/**/*.ts'],
-        ignore: [
-          'src/**/*.spec.ts',
-          'src/**/*.router.ts',
-          'src/functions/**/index.ts',
-        ],
+        ignore: ['src/**/*.spec.ts', 'src/**/*.router.ts', 'src/functions/**/index.ts'],
       },
     },
     'serverless-offline': {
