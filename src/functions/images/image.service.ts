@@ -23,21 +23,6 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
     throw new Error('filename required');
   }
 
-  // const bucketParams: PutObjectCommandInput = {
-  //   Bucket: `s3-image-upload`,
-  //   Key: `s3-image-upload/original/${id}`,
-  //   ACL: 'public-read',
-  // };
-  //
-  // // Create a command to put the object in the S3 bucket.
-  // const command = new PutObjectCommand(bucketParams);
-  // Create the presigned URL.
-  // const signedUrl = await getSignedUrl(s3Client, command, {
-  //   expiresIn: 3600,
-  //   signingRegion: 'eu-west-2',
-  // });
-  // console.log(signedUrl);
-
   const signedPost = await s3Client.createPresignedPost({
     Bucket: `s3-image-upload`,
     Expires: 3600,
@@ -45,7 +30,34 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
       key: `original/${id}`,
     },
   });
-  console.log('SIGNED URL', JSON.stringify(signedPost));
+  console.log('SIGNED POST', JSON.stringify(signedPost));
+
+  const params = { ...signedPost.fields };
+  delete params['key'];
+  delete params['bucket'];
+
+  const url = `${signedPost.url}/${signedPost.fields.key}`;
+
+  // Use like this:
+  // https://www.webiny.com/blog/upload-files-to-aws-s3-using-pre-signed-post-data-and-a-lambda-function-7a9fb06d56c1
+  // const formData = new FormData();
+  // Object.keys(presignedPostData.fields).forEach(key => {
+  //   formData.append(key, presignedPostData.fields[key]);
+  // });
+  // // Actual file has to be appended last.
+  // formData.append("file", file);
+  // const xhr = new XMLHttpRequest();
+  // xhr.open("POST", presignedPostData.url, true);
+  // xhr.send(formData);
+  // xhr.onload = function() {
+  //   this.status === 204 ? resolve() : reject(this.responseText);
+  // };
+
+  // const urlParams = new URLSearchParams();
+  // Object.entries(signedPost.fields)
+  //   .filter(([key]) => !['bucket', 'key'].includes(key))
+  //   .forEach(([key, value]) => urlParams.append(key, value));
+  // const signedUrl = `${signedPost.url}/${signedPost.fields.key}?${urlParams.toString()}`;
 
   // console.log('About to send command', command);
   //
@@ -62,7 +74,8 @@ export async function createImage(createImageDto: CreateImageDto): Promise<Image
   };
 
   const upload: CreateImageDto['upload'] = {
-    url: signedPost.url,
+    url,
+    params,
     validUntil: new Date(new Date().getTime() + 3600 * 1000), // TODO actually compute properly
   };
 

@@ -12,8 +12,9 @@ export interface ImageData {
 
   upload: null | {
     url: string;
+    params: { [key: string]: number | string };
     validUntil: Date;
-  }
+  };
 }
 
 export interface ImageKey {
